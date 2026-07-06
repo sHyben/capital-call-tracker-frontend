@@ -1,0 +1,52 @@
+{
+  "app": {
+    "title": "Sledovanie kapitálových výziev"
+  },
+  "nav": {
+    "funds": "Fondy",
+    "myCalls": "Moje výzvy",
+    "manageCalls": "Správa výziev"
+  },
+  "auth": {
+    "signIn": "Prihlásiť sa",
+    "signOut": "Odhlásiť sa"
+  },
+  "funds": {
+    "title": "Fondy",
+    "loadError": "Fondy sa nepodarilo načítať.",
+    "name": "Názov",
+    "targetSize": "Cieľová veľkosť"
+  },
+  "myCalls": {
+    "title": "Moje kapitálové výzvy",
+    "loadError": "Vaše kapitálové výzvy sa nepodarilo načítať."
+  },
+  "capitalCalls": {
+    "amount": "Suma",
+    "dueDate": "Termín splatnosti",
+    "status": "Stav",
+    "notice": "Oznámenie",
+    "viewNotice": "Zobraziť oznámenie",
+    "loadError": "Kapitálové výzvy sa nepodarilo načítať.",
+    "generateNotice": "Vygenerovať oznámenie"
+  },
+  "status": {
+    "DRAFT": "Koncept",
+    "NOTICE_GENERATING": "Generuje sa oznámenie",
+    "ISSUED": "Vydané",
+    "FUNDED": "Splatené"
+  },
+  "manageCalls": {
+    "title": "Správa kapitálových výziev",
+    "selectFund": "Fond",
+    "selectInvestor": "Investor",
+    "choose": "Vybrať...",
+    "pickInvestorHint": "Vyberte fond a investora na zobrazenie a vytvorenie kapitálových výziev."
+  },
+  "callForm": {
+    "title": "Nová kapitálová výzva",
+    "amount": "Suma",
+    "dueDate": "Termín splatnosti",
+    "submit": "Vytvoriť"
+  }
+}

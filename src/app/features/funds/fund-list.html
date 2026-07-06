@@ -1,0 +1,22 @@
+<h1>{{ 'funds.title' | translate }}</h1>
+
+@if (fundsResource.isLoading()) {
+  <mat-spinner diameter="32" />
+} @else if (fundsResource.error()) {
+  <p class="error">{{ 'funds.loadError' | translate }}</p>
+} @else {
+  <table mat-table [dataSource]="fundsResource.value()">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>{{ 'funds.name' | translate }}</th>
+      <td mat-cell *matCellDef="let fund">{{ fund.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="targetSize">
+      <th mat-header-cell *matHeaderCellDef>{{ 'funds.targetSize' | translate }}</th>
+      <td mat-cell *matCellDef="let fund">{{ fund.targetSize | number }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+}

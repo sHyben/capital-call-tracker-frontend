@@ -1,0 +1,52 @@
+{
+  "app": {
+    "title": "Capital Call Tracker"
+  },
+  "nav": {
+    "funds": "Funds",
+    "myCalls": "My Calls",
+    "manageCalls": "Manage Calls"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "funds": {
+    "title": "Funds",
+    "loadError": "Could not load funds.",
+    "name": "Name",
+    "targetSize": "Target size"
+  },
+  "myCalls": {
+    "title": "My Capital Calls",
+    "loadError": "Could not load your capital calls."
+  },
+  "capitalCalls": {
+    "amount": "Amount",
+    "dueDate": "Due date",
+    "status": "Status",
+    "notice": "Notice",
+    "viewNotice": "View notice",
+    "loadError": "Could not load capital calls.",
+    "generateNotice": "Generate notice"
+  },
+  "status": {
+    "DRAFT": "Draft",
+    "NOTICE_GENERATING": "Generating notice",
+    "ISSUED": "Issued",
+    "FUNDED": "Funded"
+  },
+  "manageCalls": {
+    "title": "Manage Capital Calls",
+    "selectFund": "Fund",
+    "selectInvestor": "Investor",
+    "choose": "Choose...",
+    "pickInvestorHint": "Select a fund and investor to view and create capital calls."
+  },
+  "callForm": {
+    "title": "New capital call",
+    "amount": "Amount",
+    "dueDate": "Due date",
+    "submit": "Create"
+  }
+}

@@ -1,0 +1,23 @@
+<form [formRoot]="callForm" (ngSubmit)="onSubmit()">
+  <h3>{{ 'callForm.title' | translate }} — {{ investor().name }}</h3>
+
+  <mat-form-field>
+    <mat-label>{{ 'callForm.amount' | translate }}</mat-label>
+    <input matInput type="number" step="0.01" [formField]="callForm.amount" />
+    @if (callForm.amount().touched() && callForm.amount().invalid()) {
+      <mat-error>{{ callForm.amount().errors()[0].message }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'callForm.dueDate' | translate }}</mat-label>
+    <input matInput type="date" [formField]="callForm.dueDate" />
+    @if (callForm.dueDate().touched() && callForm.dueDate().invalid()) {
+      <mat-error>{{ callForm.dueDate().errors()[0].message }}</mat-error>
+    }
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="callForm().submitting()">
+    {{ 'callForm.submit' | translate }}
+  </button>
+</form>

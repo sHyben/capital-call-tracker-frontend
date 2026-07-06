@@ -1,12 +1,54 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { InteractionStatus } from '@azure/msal-browser';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
+import { getUserRoles } from './auth/app-role';
+import { LanguageService, AppLanguage } from './core/language.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslatePipe,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('capital-call-tracker-frontend');
+  private readonly msalService = inject(MsalService);
+  private readonly broadcastService = inject(MsalBroadcastService);
+  protected readonly languageService = inject(LanguageService);
+
+  private readonly inProgress = toSignal(this.broadcastService.inProgress$, {
+    initialValue: InteractionStatus.Startup,
+  });
+
+  protected readonly account = computed(() =>
+    this.inProgress() === InteractionStatus.None ? this.msalService.instance.getActiveAccount() : null,
+  );
+  protected readonly roles = computed(() => getUserRoles(this.account()?.idTokenClaims));
+  protected readonly isFundManager = computed(() => this.roles().includes('FundManager'));
+  protected readonly isInvestor = computed(() => this.roles().includes('Investor'));
+
+  protected signIn(): void {
+    this.msalService.loginRedirect();
+  }
+
+  protected signOut(): void {
+    this.msalService.logoutRedirect();
+  }
+
+  protected switchLanguage(language: AppLanguage): void {
+    this.languageService.setLanguage(language);
+  }
 }
