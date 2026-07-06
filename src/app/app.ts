@@ -5,9 +5,10 @@ import { InteractionStatus } from '@azure/msal-browser';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { getUserRoles } from './auth/app-role';
+import { RolesService } from './auth/roles.service';
 import { LanguageService, AppLanguage } from './core/language.service';
 
 @Component({
@@ -18,6 +19,7 @@ import { LanguageService, AppLanguage } from './core/language.service';
     RouterLinkActive,
     MatToolbarModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     TranslatePipe,
   ],
@@ -27,6 +29,7 @@ import { LanguageService, AppLanguage } from './core/language.service';
 export class App {
   private readonly msalService = inject(MsalService);
   private readonly broadcastService = inject(MsalBroadcastService);
+  private readonly rolesService = inject(RolesService);
   protected readonly languageService = inject(LanguageService);
 
   private readonly inProgress = toSignal(this.broadcastService.inProgress$, {
@@ -36,9 +39,8 @@ export class App {
   protected readonly account = computed(() =>
     this.inProgress() === InteractionStatus.None ? this.msalService.instance.getActiveAccount() : null,
   );
-  protected readonly roles = computed(() => getUserRoles(this.account()?.idTokenClaims));
-  protected readonly isFundManager = computed(() => this.roles().includes('FundManager'));
-  protected readonly isInvestor = computed(() => this.roles().includes('Investor'));
+  protected readonly isFundManager = computed(() => this.rolesService.roles().includes('FundManager'));
+  protected readonly isInvestor = computed(() => this.rolesService.roles().includes('Investor'));
 
   protected signIn(): void {
     this.msalService.loginRedirect();

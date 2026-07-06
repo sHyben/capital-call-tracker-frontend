@@ -13,13 +13,19 @@
     }
   </nav>
 
-  <button mat-button (click)="switchLanguage('en')">EN</button>
-  <button mat-button (click)="switchLanguage('sk')">SK</button>
+  <mat-button-toggle-group
+    [value]="languageService.current()"
+    (change)="switchLanguage($event.value)"
+    aria-label="Language"
+  >
+    <mat-button-toggle value="en">EN</mat-button-toggle>
+    <mat-button-toggle value="sk">SK</mat-button-toggle>
+  </mat-button-toggle-group>
 
   @if (account()) {
-    <button mat-button (click)="signOut()">{{ 'auth.signOut' | translate }}</button>
+    <button mat-stroked-button (click)="signOut()">{{ 'auth.signOut' | translate }}</button>
   } @else {
-    <button mat-button (click)="signIn()">{{ 'auth.signIn' | translate }}</button>
+    <button mat-flat-button color="accent" (click)="signIn()">{{ 'auth.signIn' | translate }}</button>
   }
 </mat-toolbar>
 

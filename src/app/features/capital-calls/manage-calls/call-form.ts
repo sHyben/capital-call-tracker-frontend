@@ -5,6 +5,7 @@ import { form, FormField, FormRoot, required, min, submit } from '@angular/forms
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 import { CapitalCall, CreateCapitalCallRequest } from '../../../models/capital-call.model';
@@ -13,8 +14,24 @@ import { Investor } from '../../../models/investor.model';
 
 @Component({
   selector: 'app-call-form',
-  imports: [FormField, FormRoot, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe],
+  imports: [
+    FormField,
+    FormRoot,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    TranslatePipe,
+  ],
   templateUrl: './call-form.html',
+  styles: `
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 320px;
+    }
+  `,
 })
 export class CallForm {
   private readonly http = inject(HttpClient);

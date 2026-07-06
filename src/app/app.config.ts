@@ -13,7 +13,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import {
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
@@ -56,11 +56,24 @@ export const appConfig: ApplicationConfig = {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    // Handles the return leg of the redirect login flow on app startup.
+    // Handles the return leg of the redirect login flow on app startup. MSAL's redirect flow
+    // never calls setActiveAccount() for us (only the popup flow does) — without this, every
+    // instance.getActiveAccount() call downstream (role lookups, sign-in/out UI) sees null even
+    // though the user is fully logged in and MsalInterceptor is attaching valid tokens.
     provideAppInitializer(() => {
       const msalService = inject(MsalService);
       return firstValueFrom(
-        msalService.initialize().pipe(switchMap(() => msalService.handleRedirectObservable())),
+        msalService.initialize().pipe(
+          switchMap(() => msalService.handleRedirectObservable()),
+          tap(() => {
+            if (!msalService.instance.getActiveAccount()) {
+              const [firstAccount] = msalService.instance.getAllAccounts();
+              if (firstAccount) {
+                msalService.instance.setActiveAccount(firstAccount);
+              }
+            }
+          }),
+        ),
       );
     }),
   ],

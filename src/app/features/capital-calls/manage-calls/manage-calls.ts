@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 import { Fund } from '../../../models/fund.model';
@@ -11,8 +12,21 @@ import { CallList } from './call-list';
 
 @Component({
   selector: 'app-manage-calls',
-  imports: [MatFormFieldModule, MatInputModule, TranslatePipe, CallForm, CallList],
+  imports: [MatFormFieldModule, MatInputModule, MatCardModule, TranslatePipe, CallForm, CallList],
   templateUrl: './manage-calls.html',
+  styles: `
+    .picker-card {
+      margin-bottom: 16px;
+    }
+    .picker-card mat-card-content {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .call-list-spacer {
+      margin-top: 16px;
+    }
+  `,
 })
 export class ManageCalls {
   protected readonly fundsResource = httpResource<Fund[]>(() => `${environment.apiBaseUrl}/funds`, {

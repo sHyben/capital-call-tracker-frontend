@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 import { CapitalCall } from '../../../models/capital-call.model';
@@ -16,6 +17,7 @@ import { StatusChip } from '../../../shared/status-chip';
     MatTableModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatCardModule,
     TranslatePipe,
     DecimalPipe,
     StatusChip,
