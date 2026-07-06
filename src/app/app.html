@@ -1,34 +1,52 @@
-<mat-toolbar color="primary">
-  <span>{{ 'app.title' | translate }}</span>
+<div class="app-shell">
+  <nav class="sidenav">
+    <div class="brand">
+      <mat-icon>account_balance</mat-icon>
+      <span>{{ 'app.title' | translate }}</span>
+    </div>
 
-  <span class="spacer"></span>
-
-  <nav>
-    <a mat-button routerLink="/funds" routerLinkActive="active">{{ 'nav.funds' | translate }}</a>
-    @if (isInvestor()) {
-      <a mat-button routerLink="/my-calls" routerLinkActive="active">{{ 'nav.myCalls' | translate }}</a>
-    }
-    @if (isFundManager()) {
-      <a mat-button routerLink="/manage-calls" routerLinkActive="active">{{ 'nav.manageCalls' | translate }}</a>
-    }
+    <div class="nav-links">
+      <a class="nav-link" routerLink="/funds" routerLinkActive="active">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span>{{ 'nav.funds' | translate }}</span>
+      </a>
+      @if (isInvestor()) {
+        <a class="nav-link" routerLink="/my-calls" routerLinkActive="active">
+          <mat-icon>receipt_long</mat-icon>
+          <span>{{ 'nav.myCalls' | translate }}</span>
+        </a>
+      }
+      @if (isFundManager()) {
+        <a class="nav-link" routerLink="/manage-calls" routerLinkActive="active">
+          <mat-icon>manage_accounts</mat-icon>
+          <span>{{ 'nav.manageCalls' | translate }}</span>
+        </a>
+      }
+    </div>
   </nav>
 
-  <mat-button-toggle-group
-    [value]="languageService.current()"
-    (change)="switchLanguage($event.value)"
-    aria-label="Language"
-  >
-    <mat-button-toggle value="en">EN</mat-button-toggle>
-    <mat-button-toggle value="sk">SK</mat-button-toggle>
-  </mat-button-toggle-group>
+  <div class="content-area">
+    <header class="topbar">
+      <span class="spacer"></span>
 
-  @if (account()) {
-    <button mat-stroked-button (click)="signOut()">{{ 'auth.signOut' | translate }}</button>
-  } @else {
-    <button mat-flat-button color="accent" (click)="signIn()">{{ 'auth.signIn' | translate }}</button>
-  }
-</mat-toolbar>
+      <mat-button-toggle-group
+        [value]="languageService.current()"
+        (change)="switchLanguage($event.value)"
+        aria-label="Language"
+      >
+        <mat-button-toggle value="en">EN</mat-button-toggle>
+        <mat-button-toggle value="sk">SK</mat-button-toggle>
+      </mat-button-toggle-group>
 
-<main>
-  <router-outlet />
-</main>
+      @if (account()) {
+        <button mat-stroked-button (click)="signOut()">{{ 'auth.signOut' | translate }}</button>
+      } @else {
+        <button mat-flat-button color="primary" (click)="signIn()">{{ 'auth.signIn' | translate }}</button>
+      }
+    </header>
+
+    <main>
+      <router-outlet />
+    </main>
+  </div>
+</div>

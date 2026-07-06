@@ -1,11 +1,37 @@
 <h1>{{ 'funds.title' | translate }}</h1>
 
-<mat-card>
+<div class="stats-row">
+  <mat-card class="stat-card">
+    <mat-card-content>
+      <div class="stat-icon">
+        <mat-icon>account_balance</mat-icon>
+      </div>
+      <div>
+        <div class="stat-value">{{ fundCount() }}</div>
+        <div class="stat-label">{{ 'funds.statFundCount' | translate }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-card-content>
+      <div class="stat-icon">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <div>
+        <div class="stat-value">{{ totalTargetSize() | number }}</div>
+        <div class="stat-label">{{ 'funds.statTotalTargetSize' | translate }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-card class="table-card">
   <mat-card-content>
     @if (fundsResource.isLoading()) {
-      <mat-spinner diameter="32" />
+      <div class="card-state"><mat-spinner diameter="32" /></div>
     } @else if (fundsResource.error()) {
-      <p class="error">{{ 'funds.loadError' | translate }}</p>
+      <p class="error card-state">{{ 'funds.loadError' | translate }}</p>
     } @else {
       <table mat-table [dataSource]="fundsResource.value()">
         <ng-container matColumnDef="name">
@@ -14,8 +40,8 @@
         </ng-container>
 
         <ng-container matColumnDef="targetSize">
-          <th mat-header-cell *matHeaderCellDef>{{ 'funds.targetSize' | translate }}</th>
-          <td mat-cell *matCellDef="let fund">{{ fund.targetSize | number }}</td>
+          <th mat-header-cell *matHeaderCellDef class="col-numeric">{{ 'funds.targetSize' | translate }}</th>
+          <td mat-cell *matCellDef="let fund" class="col-numeric">{{ fund.targetSize | number }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

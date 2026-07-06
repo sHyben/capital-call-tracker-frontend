@@ -3,7 +3,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { InteractionStatus } from '@azure/msal-browser';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +16,6 @@ import { LanguageService, AppLanguage } from './core/language.service';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    MatToolbarModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatIconModule,

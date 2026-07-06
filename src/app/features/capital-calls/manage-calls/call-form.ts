@@ -28,8 +28,19 @@ import { Investor } from '../../../models/investor.model';
     form {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-width: 320px;
+      gap: 4px;
+    }
+    .form-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .form-row mat-form-field {
+      flex: 1;
+      min-width: 180px;
+    }
+    button[type='submit'] {
+      align-self: flex-start;
     }
   `,
 })

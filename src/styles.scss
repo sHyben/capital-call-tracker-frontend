@@ -5,15 +5,25 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+:root {
+  // Custom brand colors for the hand-built app shell (sidebar, stat cards) — kept separate
+  // from Material's own system tokens (--mat-sys-*) since these style bespoke, non-Material
+  // markup rather than Material components.
+  --app-navy: #0f172a;
+  --app-navy-elevated: #16213a;
+  --app-navy-border: #26314d;
+  --app-gold: #d4af37;
+}
+
 html {
   height: 100%;
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$blue-palette,
+        tertiary: mat.$cyan-palette,
       ),
-      typography: Roboto,
+      typography: Inter,
       density: 0,
     )
   );
@@ -35,5 +45,120 @@ body {
   // Reset the user agent margin.
   margin: 0;
   height: 100%;
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+// Modern table treatment applied site-wide (fund-list, my-calls, call-list all use plain
+// `mat-table`) — uppercase letter-spaced headers, subtle row dividers, hover highlight.
+.mat-mdc-table {
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mat-sys-on-surface-variant);
+  border-bottom: 2px solid var(--mat-sys-outline-variant);
+}
+
+.mat-mdc-cell {
+  border-bottom-color: var(--mat-sys-outline-variant);
+  font-size: 14px;
+}
+
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  padding: 14px 20px !important;
+}
+
+.mat-mdc-row {
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-container-low);
+  }
+
+  &:last-child .mat-mdc-cell {
+    border-bottom: none;
+  }
+}
+
+// Numeric/amount columns — right-aligned, tabular figures, applied via this helper class in
+// each feature's table template.
+.col-numeric {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+// Dashboard-style KPI stat cards, shared between fund-list and my-calls.
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 220px;
+
+  .mat-mdc-card-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--app-navy);
+  flex-shrink: 0;
+
+  mat-icon {
+    color: var(--app-gold);
+  }
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+  margin-top: 2px;
+}
+
+// A mat-card whose main content is a table: let the table's header/rows span edge-to-edge
+// flush with the card, instead of Material's default card-content padding boxing it in.
+// Non-table states (loading/error) opt back into padding via .card-state.
+.table-card {
+  overflow: hidden;
+
+  .mat-mdc-card-content {
+    padding: 0;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+
+  .card-state {
+    padding: 32px 20px;
+  }
 }
 /* You can add global styles to this file, and also import other style files */

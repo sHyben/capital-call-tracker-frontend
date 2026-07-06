@@ -15,11 +15,15 @@
     "title": "Funds",
     "loadError": "Could not load funds.",
     "name": "Name",
-    "targetSize": "Target size"
+    "targetSize": "Target size",
+    "statFundCount": "Funds",
+    "statTotalTargetSize": "Total target size"
   },
   "myCalls": {
     "title": "My Capital Calls",
-    "loadError": "Could not load your capital calls."
+    "loadError": "Could not load your capital calls.",
+    "statCallCount": "Capital calls",
+    "statTotalAmount": "Total amount"
   },
   "capitalCalls": {
     "amount": "Amount",

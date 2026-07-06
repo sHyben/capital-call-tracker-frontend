@@ -15,11 +15,15 @@
     "title": "Fondy",
     "loadError": "Fondy sa nepodarilo načítať.",
     "name": "Názov",
-    "targetSize": "Cieľová veľkosť"
+    "targetSize": "Cieľová veľkosť",
+    "statFundCount": "Fondy",
+    "statTotalTargetSize": "Celková cieľová veľkosť"
   },
   "myCalls": {
     "title": "Moje kapitálové výzvy",
-    "loadError": "Vaše kapitálové výzvy sa nepodarilo načítať."
+    "loadError": "Vaše kapitálové výzvy sa nepodarilo načítať.",
+    "statCallCount": "Kapitálové výzvy",
+    "statTotalAmount": "Celková suma"
   },
   "capitalCalls": {
     "amount": "Suma",

@@ -2,25 +2,23 @@
 
 <mat-card class="picker-card">
   <mat-card-content>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'manageCalls.selectFund' | translate }}</mat-label>
-      <select matNativeControl (change)="onFundChange($any($event.target).value)">
-        <option value="">{{ 'manageCalls.choose' | translate }}</option>
+      <mat-select (selectionChange)="onFundChange($event.value)">
         @for (fund of fundsResource.value(); track fund.id) {
-          <option [value]="fund.id">{{ fund.name }}</option>
+          <mat-option [value]="fund.id">{{ fund.name }}</mat-option>
         }
-      </select>
+      </mat-select>
     </mat-form-field>
 
     @if (selectedFundId()) {
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>{{ 'manageCalls.selectInvestor' | translate }}</mat-label>
-        <select matNativeControl (change)="onInvestorChange($any($event.target).value)">
-          <option value="">{{ 'manageCalls.choose' | translate }}</option>
+        <mat-select (selectionChange)="onInvestorChange($event.value)">
           @for (investor of investorsResource.value(); track investor.id) {
-            <option [value]="investor.id">{{ investor.name }}</option>
+            <mat-option [value]="investor.id">{{ investor.name }}</mat-option>
           }
-        </select>
+        </mat-select>
       </mat-form-field>
     }
   </mat-card-content>

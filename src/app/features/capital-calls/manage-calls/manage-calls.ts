@@ -1,7 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { TranslatePipe } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
@@ -12,7 +12,7 @@ import { CallList } from './call-list';
 
 @Component({
   selector: 'app-manage-calls',
-  imports: [MatFormFieldModule, MatInputModule, MatCardModule, TranslatePipe, CallForm, CallList],
+  imports: [MatFormFieldModule, MatSelectModule, MatCardModule, TranslatePipe, CallForm, CallList],
   templateUrl: './manage-calls.html',
   styles: `
     .picker-card {
@@ -22,6 +22,10 @@ import { CallList } from './call-list';
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
+    }
+    .picker-card mat-form-field {
+      min-width: 240px;
+      flex: 1;
     }
     .call-list-spacer {
       margin-top: 16px;
@@ -49,12 +53,12 @@ export class ManageCalls {
     this.investorsResource.value().find((investor) => investor.id === this.selectedInvestorId()),
   );
 
-  protected onFundChange(value: string): void {
-    this.selectedFundId.set(value ? Number(value) : null);
+  protected onFundChange(fundId: number): void {
+    this.selectedFundId.set(fundId);
     this.selectedInvestorId.set(null);
   }
 
-  protected onInvestorChange(value: string): void {
-    this.selectedInvestorId.set(value ? Number(value) : null);
+  protected onInvestorChange(investorId: number): void {
+    this.selectedInvestorId.set(investorId);
   }
 }

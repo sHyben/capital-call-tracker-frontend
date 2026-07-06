@@ -1,16 +1,42 @@
 <h1>{{ 'myCalls.title' | translate }}</h1>
 
-<mat-card>
+<div class="stats-row">
+  <mat-card class="stat-card">
+    <mat-card-content>
+      <div class="stat-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div>
+        <div class="stat-value">{{ callCount() }}</div>
+        <div class="stat-label">{{ 'myCalls.statCallCount' | translate }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-card-content>
+      <div class="stat-icon">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <div>
+        <div class="stat-value">{{ totalAmount() | number: '1.2-2' }}</div>
+        <div class="stat-label">{{ 'myCalls.statTotalAmount' | translate }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-card class="table-card">
   <mat-card-content>
     @if (callsResource.isLoading()) {
-      <mat-spinner diameter="32" />
+      <div class="card-state"><mat-spinner diameter="32" /></div>
     } @else if (callsResource.error()) {
-      <p class="error">{{ 'myCalls.loadError' | translate }}</p>
+      <p class="error card-state">{{ 'myCalls.loadError' | translate }}</p>
     } @else {
       <table mat-table [dataSource]="callsResource.value()">
         <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>{{ 'capitalCalls.amount' | translate }}</th>
-          <td mat-cell *matCellDef="let call">{{ call.amount | number: '1.2-2' }}</td>
+          <th mat-header-cell *matHeaderCellDef class="col-numeric">{{ 'capitalCalls.amount' | translate }}</th>
+          <td mat-cell *matCellDef="let call" class="col-numeric">{{ call.amount | number: '1.2-2' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="dueDate">
