@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { form, FormField, FormRoot, required, min, submit } from '@angular/forms/signals';
+import { form, FormField, FormRoot, required, min, validate } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,48 +56,64 @@ export class CallForm {
     dueDate: '',
   });
 
-  protected readonly callForm = form(this.model, (f) => {
-    required(f.investorId);
-    required(f.amount);
-    min(f.amount, 0.01);
-    required(f.dueDate);
-  });
+  // Passing `submission` here (rather than calling the standalone `submit()` function from a
+  // template event handler) is what makes `FormRoot` actually invoke this on the form's native
+  // `submit` event — without it, FormRoot just calls preventDefault() and does nothing.
+  protected readonly callForm = form(
+    this.model,
+    (f) => {
+      required(f.investorId);
+      required(f.amount);
+      min(f.amount, 0.01);
+      required(f.dueDate);
+      validate(f.dueDate, ({ value }) => {
+        const dueDate = value();
+        if (!dueDate) {
+          return undefined;
+        }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return new Date(dueDate) > today
+          ? undefined
+          : { kind: 'future', message: 'Due date must be in the future.' };
+      });
+    },
+    {
+      submission: {
+        action: async () => {
+          try {
+            await firstValueFrom(
+              this.http.post<CapitalCall>(`${environment.apiBaseUrl}/capital-calls`, this.model()),
+            );
+            this.created.emit();
+            this.model.set({ investorId: this.investor().id, amount: 0, dueDate: '' });
+            return undefined;
+          } catch (err) {
+            if (err instanceof HttpErrorResponse && err.error) {
+              const apiError = err.error as ApiError;
+              if (apiError.fieldErrors) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const fieldTrees = this.callForm as unknown as Record<string, any>;
+                return Object.entries(apiError.fieldErrors)
+                  .filter(([field]) => field in fieldTrees)
+                  .map(([field, message]) => ({
+                    fieldTree: fieldTrees[field],
+                    kind: 'server',
+                    message,
+                  }));
+              }
+            }
+            throw err;
+          }
+        },
+      },
+    },
+  );
 
   constructor() {
     effect(() => {
       const investorId = this.investor().id;
       this.model.update((current) => ({ ...current, investorId }));
-    });
-  }
-
-  protected async onSubmit(): Promise<void> {
-    await submit(this.callForm, {
-      action: async () => {
-        try {
-          await firstValueFrom(
-            this.http.post<CapitalCall>(`${environment.apiBaseUrl}/capital-calls`, this.model()),
-          );
-          this.created.emit();
-          this.model.set({ investorId: this.investor().id, amount: 0, dueDate: '' });
-          return undefined;
-        } catch (err) {
-          if (err instanceof HttpErrorResponse && err.error) {
-            const apiError = err.error as ApiError;
-            if (apiError.fieldErrors) {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const fieldTrees = this.callForm as unknown as Record<string, any>;
-              return Object.entries(apiError.fieldErrors)
-                .filter(([field]) => field in fieldTrees)
-                .map(([field, message]) => ({
-                  fieldTree: fieldTrees[field],
-                  kind: 'server',
-                  message,
-                }));
-            }
-          }
-          throw err;
-        }
-      },
     });
   }
 }
